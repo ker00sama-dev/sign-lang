@@ -12,7 +12,7 @@ Route::get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
-        Route::post('user/update/profile', [UserController::class, 'UpdateProfile']);
+        Route::post('user/update/profile', [UserController::class, 'update_profile']);
     });
 
     Route::group(['prefix' => 'auth'], function () {
