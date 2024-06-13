@@ -9,6 +9,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::group(['prefix' => 'v1'], function () {
+
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('user/update/profile', [AuthController::class, 'update_profile']);
     });
