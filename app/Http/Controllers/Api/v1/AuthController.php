@@ -23,8 +23,12 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return $user->createToken($request->device_name)->plainTextToken;
+        return response()->json([
+            'token' => $user->createToken('default_token')->plainTextToken,
+            'message' => 'User registered successfully'
+        ], 201);
     }
+
 
     public function login(Request $request)
     {
@@ -35,14 +39,26 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        return $user->createToken($request->device_name)->plainTextToken;
+        $profile = [
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'phone_number' => $user->phone
+        ];
+
+        return response()->json([
+            'token' => $user->createToken('default_token')->plainTextToken,
+            'profile' => $profile
+        ]);
     }
+
+
+
 
     public function logout(Request $request)
     {
