@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
@@ -64,6 +65,7 @@ class AuthController extends Controller
                 'profile' => $profile
             ]);
         } catch (\Throwable $th) {
+            Log::error();
             return response()->json([
                 'message' => 'Failed to login',
                 'error' => $th->getMessage()
@@ -78,4 +80,6 @@ class AuthController extends Controller
         $user?->tokens()->delete();
         return response()->noContent();
     }
+
+
 }
